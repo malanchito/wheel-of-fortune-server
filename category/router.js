@@ -14,16 +14,16 @@ router.post('/category', auth, (req, res, next) => {
 router.get('/category/:id', auth, (req, res, next) => {
     Word
         .findAll({
-            where: {categoryId:req.params.id}
+            where: { categoryId: req.params.id }
         })
-        .then(word => {res.json({ words: word })})
+        .then(word => { res.json({ words: word }) })
         .catch(next)
 })
 
 router.get('/category/', auth, (req, res, next) => {
     Category
         .findAll()
-        .then(category => {res.json({ categories: category })})
+        .then(category => { res.json({ categories: category }) })
         .catch(next)
 })
 

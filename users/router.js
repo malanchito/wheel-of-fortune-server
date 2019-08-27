@@ -33,7 +33,7 @@ router.put('/users/:id', auth, (req, res, next) => {
               })
           }else{
                 user.update(req.body)
-                .then(ticket => res.status(200).json(ticket))
+                .then(user => res.status(200).json(user))
                 .catch(next)
           }
     })

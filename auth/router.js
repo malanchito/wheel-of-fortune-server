@@ -1,5 +1,5 @@
 const express = require('express')
-const {toJWT} = require('./jwt')
+const { toJWT } = require('./jwt')
 const bcrypt = require('bcrypt');
 const User = require('../users/model')
 const router=express.Router()

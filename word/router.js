@@ -1,8 +1,9 @@
 const express = require('express')
 const Word = require('./model.js')
 const router=express.Router()
+const auth = require('../auth/middleware')
 
-router.post('/category/:id', function (req, res,next) {
+router.post('/category/:id', auth, (req, res, next) => {
     const id = req.params.id
     const word = { 
         puzzle: req.body.puzzle,
@@ -16,7 +17,7 @@ router.post('/category/:id', function (req, res,next) {
     .catch(err => {next(err)})
 })
 
-router.get('/words/:level', function (req, res, next) {
+router.get('/words/:level', auth, (req, res, next) => {
     Word
         .findAll({
             where: {level:req.params.level}
@@ -25,7 +26,7 @@ router.get('/words/:level', function (req, res, next) {
         .catch(next)
 })
 
-router.delete('/word', function (req, res, next) {
+router.delete('/word', auth, (req, res, next) => {
     Word.destroy({
         where: {content:req.body.content}
     }) 

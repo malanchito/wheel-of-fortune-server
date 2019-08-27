@@ -5,10 +5,11 @@ const router = express.Router()
 const Sse = require('json-sse')
 const stream = new Sse()
 const Op = Sequelize.Op
+const auth = require('../auth/middleware')
 
-router.get('/stream/:id', function (req, res, next) {
+router.get('/stream/:id', auth, (req, res, next) => {
   Game
-    .findAll({where:{id:req.params.id}})
+    .findByPk(req.params.id)
     .then(game => {
       const json = JSON.stringify(game)
       stream.init(req, res)
@@ -17,11 +18,9 @@ router.get('/stream/:id', function (req, res, next) {
     .catch(next)
 })
 
-router.get('/games', function (req, res, next) {
+router.get('/games', auth, (req, res, next) => {
   Game
-    .findAll({where:
-              {finished: {[Op.not]:true}
-    }})
+    .findAll({ where: { finished: { [Op.not]:true } } })
     .then(games => {
       const json = JSON.stringify(games)
       return json
@@ -29,8 +28,9 @@ router.get('/games', function (req, res, next) {
     .catch(next)
 })
 
-router.post('/game', function (req, res, next) {
-  Game.create(req.body)
+router.post('/game', auth, (req, res, next) => {
+  Game
+    .create(req.body)
     .then(game => {
       const json = JSON.stringify(game)
       stream.updateInit(json)
@@ -40,7 +40,7 @@ router.post('/game', function (req, res, next) {
     .catch(next)
 })
 
-router.put('/game/:id', (req, res, next) => {
+router.put('/game/:id', auth, (req, res, next) => {
   const id = req.params.id
   Game
     .findByPk(id)
@@ -48,8 +48,9 @@ router.put('/game/:id', (req, res, next) => {
       const json = JSON.stringify(game)
       stream.updateInit(json)
       game.update({ guessed: req.body.guessed })
-    .then(updatedGame => res.status(200).send(updatedGame))
+      .then(updatedGame => res.status(200).send(updatedGame))
     })
     .catch(next)
   })
+
 module.exports = router

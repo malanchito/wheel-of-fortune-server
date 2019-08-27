@@ -1,17 +1,30 @@
+const Sequelize = require('sequelize')
 const express = require('express')
 const Game = require('./model.js')
 const router = express.Router()
 const Sse = require('json-sse')
-
 const stream = new Sse()
-router.get('/stream', function (req, res, next) {
+const Op = Sequelize.Op
+
+router.get('/stream/:id', function (req, res, next) {
   Game
-    .findAll()
+    .findAll({where:{id:req.params.id}})
     .then(game => {
       const json = JSON.stringify(game)
-
       stream.init(req, res)
       return stream.updateInit(json)
+    })
+    .catch(next)
+})
+
+router.get('/games', function (req, res, next) {
+  Game
+    .findAll({where:
+              {finished: {[Op.not]:true}
+    }})
+    .then(games => {
+      const json = JSON.stringify(games)
+      return json
     })
     .catch(next)
 })

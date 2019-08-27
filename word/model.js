@@ -5,13 +5,17 @@ const Category = require('../category/model')
 const Word = db.define(
     'word',
     {
-        content: {
+        puzzle: {
             type: Sequelize.STRING,
             field: 'word_content'
         },
         clue: {
             type: Sequelize.STRING,
             field: 'word_clue'
+        },
+        level: {
+            type: Sequelize.INTEGER,
+            field: 'word_level'
         }
 
     },

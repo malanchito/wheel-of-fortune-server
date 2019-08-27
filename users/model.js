@@ -10,9 +10,11 @@ const User = sequelize.define('users', {
   password: {
     type: Sequelize.STRING,
     allowNull: false
-  }
-  ,
+  },
   score: {
+    type: Sequelize.INTEGER
+  },
+  turn: {
     type: Sequelize.INTEGER
   }
 }, {

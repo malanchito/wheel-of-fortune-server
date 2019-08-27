@@ -7,6 +7,9 @@ const Game = db.define(
         wheelValue: {
             type: Sequelize.STRING
         },
+        wordId: {
+            type: Sequelize.INTEGER
+        },
         guessed: {
             type: Sequelize.ARRAY(Sequelize.STRING(1))
         },
@@ -15,6 +18,12 @@ const Game = db.define(
         },
         finished: {
             type: Sequelize.BOOLEAN
+        },
+        consonants: {
+            type: Sequelize.ARRAY(Sequelize.STRING(1))
+        },
+        vowels: {
+            type: Sequelize.ARRAY(Sequelize.STRING(1))
         }
     },
     { timestamps: false }

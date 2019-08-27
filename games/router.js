@@ -40,19 +40,16 @@ router.post('/game', function (req, res, next) {
     .catch(next)
 })
 
-router
-  .put('/game/:id', (req, res, next) => {
-    const id = req.params.id
-   
-
-    Game
-      .findByPk(id)
-      .then(game =>  {
-        const json = JSON.stringify(game)
-        stream.updateInit(json)
-        game.update({ guessed: req.body.guessed })
-      .then(updatedGame => res.status(200).send(updatedGame))
+router.put('/game/:id', (req, res, next) => {
+  const id = req.params.id
+  Game
+    .findByPk(id)
+    .then(game =>  {
+      const json = JSON.stringify(game)
+      stream.updateInit(json)
+      game.update({ guessed: req.body.guessed })
+    .then(updatedGame => res.status(200).send(updatedGame))
     })
-      .catch(next)
+    .catch(next)
   })
 module.exports = router

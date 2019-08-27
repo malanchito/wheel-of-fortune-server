@@ -16,7 +16,8 @@ router
           } else {
             const user  = new User ({
               name: req.body.name,
-              score: req.body.score,
+              score: 0,
+              turn: 0,
               password: hash
             })
             user.save()

@@ -9,5 +9,4 @@ sequelize
   .then(() => console.log('db schema updated'))
   .catch(() => console.error)
 
-
 module.exports = sequelize

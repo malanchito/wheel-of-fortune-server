@@ -5,14 +5,24 @@ const router=express.Router()
 router.post('/category/:id', function (req, res,next) {
     const id = req.params.id
     const word = { 
-        content: req.body.content,
+        puzzle: req.body.puzzle,
         clue: req.body.clue,
+        level: req.body.level,
         categoryId: id
     }
   Word
     .create(word)
     .then(word => res.status(201).json(word))
     .catch(err => {next(err)})
+})
+
+router.get('/words/:level', function (req, res, next) {
+    Word
+        .findAll({
+            where: {level:req.params.level}
+        })
+        .then(word => {res.json({ words: word })})
+        .catch(next)
 })
 
 router.delete('/word', function (req, res, next) {

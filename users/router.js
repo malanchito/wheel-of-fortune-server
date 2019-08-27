@@ -1,65 +1,31 @@
-const { Router } = require('express')
-const User = require('./model')
-const bcrypt = require('bcrypt')
+const express = require('express')
+const User = require('./model.js')
+const bcrypt = require('bcrypt');
+const router=express.Router()
 
-const router = new Router()
+router.post('/users', function (req, res,next) {
+  const user = {
+    name: req.body.username,
+    password: bcrypt.hashSync(req.body.password, 10),
+    score: 0,
+    turn: 0
+  }
+  User.create(user)
+  .then(user => res.status(201).json({
+                          message: "A NEW USER WAS ADDED",
+                            "new user": user.username
+  }))
+  .catch(next)
+})
 
-router
-  .post(
-    '/user',
-    (req, res, next) => {
-       bcrypt.hash(req.body.password, 10, (err, hash) => {
-          if (err) {
-            return res.status(500).json({
-              error: err
-            })
-          } else {
-            const user  = new User ({
-              name: req.body.name,
-              score: 0,
-              turn: 0,
-              password: hash
-            })
-            user.save()
-            .then(result => {
-              console.log(result);
-              res.status(201).json({
-                message: 'User created'
-              })
-            })
-            .catch(err => {
-              console.log(err)
-              res.status(500).json({
-                error: err
-              })
-            })
-          }
-        })
-      
-      })
+router.get('/users', function (req, res, next) {
+  const sortProperty = req.query.sortBy
+  const limit = 10
+  const offset = 0
+  User.findAndCountAll({ limit, offset, order: [[sortProperty,'DESC']]})
+  .then(users => {res.json( users.rows.map(user => [user.name,user.score]) )})
+  .catch(next)
+})
 
-  //     if(!name || !password) {
-  //       res.status(400).send({
-  //         message: 'Please supply a valid name and password'
-  //       })
-  //     }
-  //       //should add password_confirmation: req.body.password_confirmation
-  //     },
-  //     //if (user.email && user.pass && user.pass_confirm) {
-  //       // if user.pass
-  //     // }
-  //     User
-  //       .create(user)
-  //       .then(user => {
-  //         res
-  //           .status(200)
-  //           .send(user)
-  //       })
-  //       .catch(err =>
-  //         res
-  //           .status(422)
-  //           .send(next(err))
-  //       )
-  // )
 
-module.exports = router
+  module.exports = router

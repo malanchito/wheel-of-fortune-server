@@ -9,7 +9,9 @@ router.post('/category/:id', auth, (req, res, next) => {
         puzzle: req.body.puzzle,
         clue: req.body.clue,
         level: req.body.level,
-        categoryId: id
+        categoryId: id,
+        video_url: req.body.video_url,
+        video_time: req.body.video_time
     }
   Word
     .create(word)

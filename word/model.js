@@ -16,6 +16,14 @@ const Word = db.define(
         level: {
             type: Sequelize.INTEGER,
             field: 'word_level'
+        },
+        video_url: {
+            type: Sequelize.STRING,
+            field: 'word_video_url'
+        },
+        video_time: {
+            type: Sequelize.INTEGER,
+            field: 'word_video_time'
         }
 
     },

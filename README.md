@@ -1,5 +1,5 @@
 # Preface
-- This is the backend part of a game group project through the Codaisseur academy course during week 7
+- This is the backend part of a game group project through the Codaisseur academy course during week 7, the router endpoints and schemas follow the rules of Rest APIs
 
 ## Table of contents
 
@@ -10,7 +10,6 @@
 - [Contributors](#Contributors)
 
 ## Technologies used
-- Rest APIs
 - Express
 - Sequelize
 

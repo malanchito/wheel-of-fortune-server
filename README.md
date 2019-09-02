@@ -1,5 +1,5 @@
 # Preface
-- This is the server part of a game group project during week 7 of the Codaisseur academy course
+- This is the backend part of a game group project through the Codaisseur academy course during week 7
 
 ## Table of contents
 

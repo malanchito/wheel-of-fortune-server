@@ -20,13 +20,10 @@ router.get('/stream/:id', auth, (req, res, next) => {
     .catch(next)
 })
 
-router.get('/games', auth, (req, res, next) => {
+router.get('/games', (req, res, next) => {
   Game
     .findAll({ where: { finished: { [Op.not]:true } } })
-    .then(games => {
-      const json = JSON.stringify(games)
-      return json
-    })
+    .then(games => res.send(games))
     .catch(next)
 })
 

@@ -21,20 +21,17 @@ router.post('/category/:id', auth, (req, res, next) => {
 
 router.get('/words/:level', auth, (req, res, next) => {
     Word
-        .findAll({
-            where: {level:req.params.level}
-        })
-        .then(word => {res.json({ words: word })})
+        .findAll({ where: { level:req.params.level } })
+        .then(words => words[Math.floor(Math.random() * words.length)])
+        .then(word => { res.json({ word: word }) })
         .catch(next)
 })
 
 router.delete('/word', auth, (req, res, next) => {
-    Word.destroy({
-        where: {content:req.body.content}
-    }) 
-    .then(word => {res.json({ word: word })})
-    .catch(err => {next(err)
-      })
+    Word
+        .destroy({ where: {content:req.body.content } }) 
+        .then(word => { res.json({ word: word }) })
+        .catch(err => { next(err)} )
   })
 
   module.exports = router

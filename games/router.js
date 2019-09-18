@@ -1,15 +1,17 @@
 const Sequelize = require('sequelize')
 const express = require('express')
 const Game = require('./model.js')
-const router = express.Router()
+const User = require('../users/model')
 const Sse = require('json-sse')
+const router=express.Router()
 const stream = new Sse()
 const Op = Sequelize.Op
 const auth = require('../auth/middleware')
 
 router.get('/stream/:id', auth, (req, res, next) => {
   Game
-    .findByPk(req.params.id)
+    .findAll({where: { id: req.params.id },
+    include:[User]})
     .then(game => {
       const json = JSON.stringify(game)
       stream.init(req, res)
@@ -18,13 +20,10 @@ router.get('/stream/:id', auth, (req, res, next) => {
     .catch(next)
 })
 
-router.get('/games', auth, (req, res, next) => {
+router.get('/games', (req, res, next) => {
   Game
     .findAll({ where: { finished: { [Op.not]:true } } })
-    .then(games => {
-      const json = JSON.stringify(games)
-      return json
-    })
+    .then(games => res.send(games))
     .catch(next)
 })
 

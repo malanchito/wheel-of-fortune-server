@@ -4,7 +4,7 @@ const Word = require('../word/model')
 const router = express.Router()
 const auth = require('../auth/middleware')
 
-router.post('/category', auth, (req, res, next) => {
+router.post('/category',  (req, res, next) => {
     Category
         .create(req.body)
         .then(word => res.status(201).json(word))

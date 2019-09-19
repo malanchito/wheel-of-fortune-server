@@ -10,8 +10,10 @@ const auth = require('../auth/middleware')
 
 router.get('/stream/:id', auth, (req, res, next) => {
   Game
-    .findAll({where: { id: req.params.id },
-    include:[User]})
+    .findAll({
+      where: { id: req.params.id },
+      include: [User]
+    })
     .then(game => {
       const json = JSON.stringify(game)
       stream.init(req, res)
@@ -20,9 +22,13 @@ router.get('/stream/:id', auth, (req, res, next) => {
     .catch(next)
 })
 
-router.get('/games', (req, res, next) => {
+router.get('/games', auth, (req, res, next) => {
   Game
-    .findAll({ where: { finished: { [Op.not]:true } } })
+    .findAll({ 
+      where: { finished: { [Op.not]:true } },
+      include: [User] 
+    })
+    .then(games => games.map(game => [game.id, game.users.map(user => user.name)]))
     .then(games => res.send(games))
     .catch(next)
 })

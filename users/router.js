@@ -9,6 +9,7 @@ router.post('/users', function (req, res,next) {
     name: req.body.username,
     password: bcrypt.hashSync(req.body.password, 10),
     score: 0,
+    highestScore: 0,
     turn: 0
   }
   User
@@ -25,17 +26,17 @@ router.put('/users/:id', auth, (req, res, next) => {
   User
     .findByPk(id)
     .then(user=>{
-          if(user.name!==req.user.username){
-            res
-              .status(403)
-              .send({
-                message: "You cannot modify another user's information"
-              })
-          }else{
-                user.update(req.body)
-                .then(user => res.status(200).json(user))
-                .catch(next)
-          }
+                user
+                  .update(req.body)
+                  .then(user => res
+                                  .status(200)
+                                  .json({
+                                    name: user.name,
+                                    score: user.score,
+                                    gameId: user.gameId,
+                                    turn: user.turn
+                                  }))
+                  .catch(next)
     })
     .catch(next)
 }) 
@@ -46,7 +47,7 @@ router.get('/users', function (req, res, next) {
   const offset = 0
   User
     .findAndCountAll({ limit, offset, order: [[sortProperty,'DESC']]})
-    .then(users => { res.json(users.rows.map(user => [user.name,user.score])) })
+    .then(users => { res.json(users.rows.map(user => [user.name, user.highestScore])) })
     .catch(next)
 })
 

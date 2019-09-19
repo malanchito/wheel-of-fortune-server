@@ -20,6 +20,10 @@ const User = db.define(
       type: Sequelize.INTEGER,
       field: 'user_score'
     },
+    highestScore: {
+      type: Sequelize.INTEGER,
+      field: 'user_highestScore'
+    },
     turn: {
       type: Sequelize.INTEGER,
       field: 'user_turn'
